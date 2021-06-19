@@ -42,7 +42,7 @@ export const deserialize = packed => {
       mineK.push(k)
     }
     return {
-      state: flag === '1' ? 'mine' : 'open',
+      state: 'cover',
       minesAround: flag === '1' ? -10 : 0
     }
   })
