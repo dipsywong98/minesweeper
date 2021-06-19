@@ -134,8 +134,10 @@ function MineSweeperView({
         return openingCeil(index);
       case 'multi':
         return openingCeils(index);
-      case 'edit-mine':
-        return editCeil(index)
+      case 'set-mine':
+        return editCeil(index, true)
+      case 'reset-mine':
+        return editCeil(index, false)
       default:
         openingCeil(-1);
     }
@@ -156,10 +158,18 @@ function MineSweeperView({
         });
       }
     } else {
-      setOpenBehavior({
-        index,
-        behavior: 'edit-mine',
-      });
+      console.log(e.buttons)
+      if (e.buttons === 1) {
+        setOpenBehavior({
+          index,
+          behavior: 'set-mine',
+        });
+      } else if (e.buttons === 2) {
+        setOpenBehavior({
+          index,
+          behavior: 'reset-mine',
+        });
+      }
     }
   }
   function onMouseOverCeils(index) {

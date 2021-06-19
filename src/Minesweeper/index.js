@@ -133,14 +133,15 @@ function reducer(state, action = {}) {
       }
     }
     case 'EDIT_CEIL': {
-      const ceil = state.ceils[action.payload]
+      const {index, flag} = action.payload
+      const ceil = state.ceils[index]
       const ceils = state.ceils.map(ceil => ({
         ...ceil
       }))
-      ceils[action.payload] = {
+      ceils[index] = {
         ...ceil,
-        minesAround: ceils[action.payload].minesAround < 0 ? 0 : -10,
-        state: ceils[action.payload].state === 'mine' ? 'cover' : 'mine'
+        minesAround: flag ? -10 : 0,
+        state: flag ? 'mine' : 'cover'
       }
       return {
         ...state,
@@ -260,8 +261,8 @@ function MineSweeper({
     dispatch({ type: 'OPENING_CEILS', payload: index })
   }
 
-  function editCeil(index) {
-    dispatch({ type: 'EDIT_CEIL', payload: index })
+  function editCeil(index, flag) {
+    dispatch({ type: 'EDIT_CEIL', payload: { index, flag } })
   }
 
   return (
