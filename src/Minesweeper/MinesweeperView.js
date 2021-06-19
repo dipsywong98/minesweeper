@@ -142,7 +142,7 @@ function MineSweeperView({
         index,
         behavior: 'single',
       });
-    } else if (e.buttons === 3) {
+    } else if (e.buttons === 3 || e.buttons === 4) {
       setOpenBehavior({
         index,
         behavior: 'multi',
