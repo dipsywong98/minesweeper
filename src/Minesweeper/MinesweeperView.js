@@ -30,6 +30,7 @@ import digit7 from '../assets/digit7.png';
 import digit8 from '../assets/digit8.png';
 import digit9 from '../assets/digit9.png';
 import digit_ from '../assets/digit-.png';
+import { serialize } from './helper'
 
 const digits = [
   digit0,
@@ -73,12 +74,15 @@ function renderDigits(number) {
 }
 
 function MineSweeperView({
+  rows,
+  columns,
   ceils,
   className,
   changeCeilState,
   onReset,
   openCeil,
   openCeils,
+  editCeil,
   mines,
   status,
   seconds,
@@ -130,22 +134,31 @@ function MineSweeperView({
         return openingCeil(index);
       case 'multi':
         return openingCeils(index);
+      case 'edit-mine':
+        return editCeil(index)
       default:
         openingCeil(-1);
     }
   }, [openBehavior.index, openBehavior.behavior]);
   function onMouseDownCeils(e, index) {
-    if (e.button === 2 && e.buttons === 2 && index !== -1) {
-      changeCeilState(index);
-    } else if (e.button === 0 && e.buttons === 1) {
+    if(['Beginner', 'Intermediate', 'Expert'].includes(difficulty)) {
+      if (e.button === 2 && e.buttons === 2 && index !== -1) {
+        changeCeilState(index);
+      } else if (e.button === 0 && e.buttons === 1) {
+        setOpenBehavior({
+          index,
+          behavior: 'single',
+        });
+      } else if (e.buttons === 3 || e.buttons === 4) {
+        setOpenBehavior({
+          index,
+          behavior: 'multi',
+        });
+      }
+    } else {
       setOpenBehavior({
         index,
-        behavior: 'single',
-      });
-    } else if (e.buttons === 3 || e.buttons === 4) {
-      setOpenBehavior({
-        index,
-        behavior: 'multi',
+        behavior: 'edit-mine',
       });
     }
   }
@@ -203,6 +216,9 @@ function MineSweeperView({
       window.removeEventListener('touchend', onTouchEndDropdown);
     };
   }, []);
+  const exportGame = () => {
+    window.prompt('Copy the below url to share your level', window.location.origin + window.location.pathname + '#' + serialize(rows, columns, ceils))
+  }
   return (
     <div className={className} onContextMenu={e => e.preventDefault()}>
       <div className="mine__drop-downs" ref={dropDown}>
@@ -259,6 +275,18 @@ function MineSweeperView({
               <span className="mine__drop-down__hot-key" />
               <div className="mine__drop-down__arrow" />
             </div>
+            <div
+              className="mine__drop-down__row"
+              onMouseUp={() => onReset('Create')}
+              onTouchStart={() => onReset('Create')}
+            >
+              <div className="mine__drop-down__check">
+                {difficulty === 'Create' && <img src={checked} alt="checked" />}
+              </div>
+              <span>Create</span>
+              <span className="mine__drop-down__hot-key" />
+              <div className="mine__drop-down__arrow" />
+            </div>
             <div className="mine__drop-down__row">
               <div className="mine__drop-down__check" />
               <span>Custom...</span>
@@ -289,6 +317,16 @@ function MineSweeperView({
               <div className="mine__drop-down__arrow" />
             </div>
             <div className="mine__drop-down__separator" />
+            <div
+              className="mine__drop-down__row"
+              onMouseUp={() => exportGame()}
+              onTouchStart={() => exportGame()}
+            >
+              <div className="mine__drop-down__check" />
+              <span>Export</span>
+              <span className="mine__drop-down__hot-key" />
+              <div className="mine__drop-down__arrow" />
+            </div>
             <div className="mine__drop-down__row">
               <div className="mine__drop-down__check" />
               <span>Best Times...</span>

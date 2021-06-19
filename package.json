@@ -1,10 +1,11 @@
 {
   "name": "minesweeper",
-  "homepage": "https://mines.now.sh",
+  "homepage": "https://dipsy.me/minesweeper",
   "version": "0.1.0",
   "author": "sh1zuku <shizukuichi@gmail.com>",
   "dependencies": {
     "lodash.samplesize": "^4.2.0",
+    "lzutf8": "^0.6.0",
     "react": "^16.8.3",
     "react-dom": "^16.8.3",
     "react-scripts": "2.1.5",

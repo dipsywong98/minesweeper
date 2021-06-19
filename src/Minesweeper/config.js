@@ -17,4 +17,10 @@ export const Config = {
     ceils: 480,
     mines: 99,
   },
+  Create: {
+    rows: 16,
+    columns: 30,
+    ceils: 480,
+    mines: 0,
+  }
 };
